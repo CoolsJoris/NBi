@@ -247,9 +247,26 @@
         <unique-rows/>
       </assert>
     </test>
-    <test name="External result-set" uid="0103">
+    <test name="External result-set defined with variable formatting" uid="0103">
       <system-under-test>
         <resultSet file="~..\Csv\ResellerOrderCountByYearBefore{@year:yyyy}.csv"/>
+      </system-under-test>
+      <assert>
+        <unique-rows/>
+      </assert>
+    </test>
+    <test name="External result-set with if-missing" uid="0103">
+      <system-under-test>
+        <result-set>
+          <file>
+            <path>~..\Csv\ResellerOrderCountByYearBefore{@year:yy}.csv</path>
+            <if-missing>
+              <file>
+                <path>..\Csv\ResellerOrderCountByYearBefore2006.csv</path>
+              </file>
+            </if-missing>
+          </file>
+        </result-set>
       </system-under-test>
       <assert>
         <unique-rows/>
@@ -468,7 +485,36 @@
         </equalTo>
       </assert>
     </test>
-    <test name="Filter with one predicate and a reference variable" uid="0202">
+    <test name="Filter with one predicate (but in a combination)" uid="0203">
+      <system-under-test>
+        <resultSet file="..\Csv\ResellerOrderCountByYearBefore2006.csv">
+          <alteration>
+            <filter>
+              <combination operator="or">
+                <predicate name="#0" type="text">
+                  <less-than>CY 2007</less-than>
+                </predicate>
+              </combination>
+            </filter>
+          </alteration>
+        </resultSet>
+      </system-under-test>
+      <assert>
+        <equalTo>
+          <resultSet>
+            <row>
+              <cell>CY 2005</cell>
+              <cell>366</cell>
+            </row>
+            <row>
+              <cell>CY 2006</cell>
+              <cell>1015</cell>
+            </row>
+          </resultSet>
+        </equalTo>
+      </assert>
+    </test>
+    <test name="Filter with one predicate and a reference variable" uid="0204">
       <system-under-test>
         <resultSet file="..\Csv\ResellerOrderCountByYearBefore2006.csv">
           <alteration>

@@ -7,14 +7,11 @@ using NUnit.Framework;
 namespace NBi.Testing.Acceptance.GenbiL
 {
     [TestFixture]
-    public class syntaxOldNewTest
+    public class SplitDistinctTest
     {
-        private const string TEST_SUITE_NAME= "SyntaxOldNew";
-        private string DefinitionFilename { get => $"Acceptance\\GenbiL\\Resources\\{TEST_SUITE_NAME}.genbil"; }
-        private string TargetFilename { get => $"Acceptance\\GenbiL\\Resources\\{TEST_SUITE_NAME}.nbits"; }
-
-        private string ExpectedFilename { get => $"Acceptance\\GenbiL\\Resources\\{TEST_SUITE_NAME}.expected.nbits"; }
-        private string CsvFilename { get => $"Acceptance\\GenbiL\\Resources\\{TEST_SUITE_NAME}.csv"; }
+        private const string TEST_SUITE_NAME="SplitDistinct";
+        private string DefinitionFilename { get { return "Acceptance\\GenbiL\\Resources\\" + TEST_SUITE_NAME + ".genbil"; } }
+        private string TargetFilename { get { return "Acceptance\\GenbiL\\Resources\\" + TEST_SUITE_NAME + ".nbits"; } }
 
         #region SetUp & TearDown
         //Called only at instance creation
@@ -37,9 +34,6 @@ namespace NBi.Testing.Acceptance.GenbiL
         {
             if (File.Exists(TargetFilename))
                 File.Delete(TargetFilename);
-
-            //if(File.Exists(CsvFilename))
-            //    File.Delete(CsvFilename);
         }
 
         //Called after each test
@@ -52,7 +46,7 @@ namespace NBi.Testing.Acceptance.GenbiL
         #endregion
 
         [Test]
-        public void Execute_SyntaxOldNew_FileGenerated()
+        public void Execute_SplitDistinct_FileGenerated()
         {
             var generator = new TestSuiteGenerator();
             generator.Load(DefinitionFilename);
@@ -62,7 +56,7 @@ namespace NBi.Testing.Acceptance.GenbiL
         }
 
         [Test]
-        public void Execute_SyntaxOldNew_MatchWithExpectations()
+        public void Execute_SplitDistinct_FileIsCorrect()
         {
             var generator = new TestSuiteGenerator();
             generator.Load(DefinitionFilename);
@@ -72,8 +66,9 @@ namespace NBi.Testing.Acceptance.GenbiL
                 Assert.Inconclusive("Test Suite not generated!");
 
             var content = File.ReadAllText(TargetFilename);
-            var expected = File.ReadAllText(ExpectedFilename);
-            Assert.That(content, Is.EqualTo(expected));
+
+            
         }
+
     }
 }
